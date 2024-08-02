@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Side</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    .video-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .video {
+      margin-bottom: 20px;
+    }
+
+    .video-thumbnail {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .video-thumbnail img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .video-description {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Videos</h1>
+  <div class="video-container">
+    <!-- videos will be displayed here -->
+  </div>
+
+  <script>
+    fetch('/videos')
+      .then((res) => res.json())
+      .then((videos) => {
+        const videoContainer = document.querySelector('.video-container');
+        videos.forEach((video) => {
+          const videoHTML = `
+            <div class="video">
+              <div class="video-thumbnail">
+                <img src="${video.thumbnail}" alt="Thumbnail">
+              </div>
+              <div class="video-description">${video.description}</div>
+              <video width="100%" controls>
+                <source src="${video.video}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          `;
+          videoContainer.innerHTML += videoHTML;
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
